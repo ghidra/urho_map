@@ -1,0 +1,10 @@
+cmake_install.cmake
+CMakeCache*
+Makefile
+bin/CoreData
+bin/Data
+bin/map
+CMake
+CMakeFiles/
+launch.sh
+bin/Resources/Models/States/*
