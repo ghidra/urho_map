@@ -45,6 +45,7 @@ DEFINE_APPLICATION_MAIN(Main)
 Main::Main(Context* context) :
     ApplicationHandler(context)
 {
+    CameraLogic::RegisterObject(context);
 }
 
 //-------------------
@@ -56,6 +57,7 @@ void Main::Start()
 
     applicationInput_ = new ApplicationInput(context_);
     SetApplicationInput(applicationInput_);
+    //applicationInput_->SetCameraType(String("sidescrolling"));
 
     stage_ = new Stage2(context_);
     stage_->Setup(scene_, cameraNode_);
