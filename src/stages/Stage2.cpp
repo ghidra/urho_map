@@ -261,8 +261,10 @@ void Stage2::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     //camera->SetFarClip(300.0f);
 
     // Set an initial position for the camera scene node above the plane
-    cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+    cameraTarget_ = scene_->CreateChild("CameraTarget");
+    cameraTarget_->SetPosition(Vector3(15.0f, 0.0f, 5.0f));
+    //cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
 
     //give the camera the logic I want
-    CameraLogic* cameralogic = cameraNode_->CreateComponent<CameraLogic>();
+    //CameraLogic* cameralogic = cameraNode_->CreateComponent<CameraLogic>();
 }

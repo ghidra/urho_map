@@ -62,6 +62,13 @@ void Main::Start()
     stage_ = new Stage2(context_);
     stage_->Setup(scene_, cameraNode_);
 
+    VariantMap camParms;
+    camParms["targetOffset"] = Vector3(0.0f,6.0f,0.0f);
+    camParms["orientation"] = Quaternion(0.0f,90.0f,0.0f);
+    applicationInput_->SetCameraType(String("sidescrolling"));
+    applicationInput_->SetCameraParameters(camParms);
+    applicationInput_->SetCameraTarget(stage_->cameraTarget_);
+
 }
 
 void Main::SubscribeToEvents()

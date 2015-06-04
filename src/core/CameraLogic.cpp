@@ -46,6 +46,7 @@ void CameraLogic::SetCameraParameters(const float distance, const float distance
 void CameraLogic::SetCameraParameters( VariantMap& parms)
 {
     if( parms.Contains("targetOffset") ) targetOffset_ = parms["targetOffset"].GetVector3();
+    if( parms.Contains("orientation") ) outDirectionOrientation_ = parms["orientation"].GetQuaternion();
     //cameraDistance_ = distance;
     //cameraDistanceMin_ = distance_min;
     //cameraDistanceMax_ = distance_max;

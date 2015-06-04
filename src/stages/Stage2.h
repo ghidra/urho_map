@@ -29,6 +29,8 @@ public:
 
     virtual void Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode);
 
+    SharedPtr<Node> cameraTarget_;
+
 protected:
 
     SharedPtr<Scene> scene_;
