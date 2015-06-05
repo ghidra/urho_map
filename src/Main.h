@@ -17,6 +17,8 @@ public:
 
     virtual void Start();
 
+    ApplicationInput * applicationInput_ = NULL;
+
 private:
     /// Construct a new Text instance, containing the 'Hello World' String, and add it to the UI root element.
     //void CreateText();
@@ -25,7 +27,6 @@ private:
     /// Handle the logic update event.
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
 
-    ApplicationInput * applicationInput_ = NULL;
     Stage2 * stage_ = NULL;
 
 };

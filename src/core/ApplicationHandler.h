@@ -49,6 +49,8 @@ public:
     /// Camera scene node.
     SharedPtr<Node> cameraNode_;
 
+    ApplicationInput * applicationInput_ = NULL;
+
 protected:
     /// Return XML patch instructions for screen joystick layout for a specific sample app, if any.
     //virtual String GetScreenJoystickPatchString() const { return String::EMPTY; }
@@ -97,7 +99,6 @@ protected:
     /// Flag for drawing debug geometry.
     bool drawDebug_;
 
-    ApplicationInput * applicationInput_ = NULL;
 };
 
 //#include "Sample.inl"

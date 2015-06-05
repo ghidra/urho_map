@@ -15,13 +15,13 @@
 
 CameraLogic::CameraLogic(Context* context) :
     LogicComponent(context),
+    cameraDistance_(20.0f),
     cameraDistanceMin_(1.0f),
     cameraDistanceMax_(5.0f),
     cameraDistanceIni_(20.0f),
     targetOffset_(Vector3(0.0f,0.0f,0.0f)),
     outDirection_(Vector3(0.0f,0.0f,-1.0f)),
     outDirectionOrientation_(Quaternion(30.0f,0.0f,0.0f)),
-    cameraDistance_(20.0f),
     cameraType_(String("default"))
 {
     // Only the scene update event is needed: unsubscribe from the rest for optimization
@@ -45,6 +45,8 @@ void CameraLogic::SetCameraParameters(const float distance, const float distance
 
 void CameraLogic::SetCameraParameters( VariantMap& parms)
 {
+    if( parms.Contains("type") ) cameraType_ = parms["type"].GetString();
+    if( parms.Contains("cameraDistance") ) cameraDistance_ = parms["cameraDistance"].GetFloat();
     if( parms.Contains("targetOffset") ) targetOffset_ = parms["targetOffset"].GetVector3();
     if( parms.Contains("orientation") ) outDirectionOrientation_ = parms["orientation"].GetQuaternion();
     //cameraDistance_ = distance;

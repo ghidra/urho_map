@@ -32,6 +32,7 @@
 
 #include "Main.h"
 #include "stages/Stage2.h"
+#include "pieces/State.h"
 //#include "core/ApplicationInput.h"
 
 
@@ -46,6 +47,7 @@ Main::Main(Context* context) :
     ApplicationHandler(context)
 {
     CameraLogic::RegisterObject(context);
+    State::RegisterObject(context);
 }
 
 //-------------------
@@ -60,14 +62,17 @@ void Main::Start()
     //applicationInput_->SetCameraType(String("sidescrolling"));
 
     stage_ = new Stage2(context_);
-    stage_->Setup(scene_, cameraNode_);
+    //stage_->Setup(scene_, cameraNode_);
+    stage_->Setup(this);
 
-    VariantMap camParms;
-    camParms["targetOffset"] = Vector3(0.0f,6.0f,0.0f);
-    camParms["orientation"] = Quaternion(0.0f,90.0f,0.0f);
-    applicationInput_->SetCameraType(String("sidescrolling"));
+    /*VariantMap camParms;
+    camParms["type"] = String("sidescrolling");
+    camParms["cameraDistance"] = 50.0f;
+    camParms["targetOffset"] = Vector3(0.0f,0.0f,0.0f);
+    camParms["orientation"] = Quaternion(45.0f,-90.0f,0.0f);
+    //applicationInput_->SetCameraType(String("sidescrolling"));
     applicationInput_->SetCameraParameters(camParms);
-    applicationInput_->SetCameraTarget(stage_->cameraTarget_);
+    applicationInput_->SetCameraTarget(stage_->cameraTarget_);*/
 
 }
 
