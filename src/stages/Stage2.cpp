@@ -26,6 +26,7 @@
 #include <Urho3D/Graphics/Zone.h>
 
 #include "Stage2.h"
+#include "../pieces/StateData.h"
 #include "../pieces/State.h"
 #include "../core/ApplicationHandler.h"
 #include "../core/CameraLogic.h"
@@ -44,6 +45,9 @@ Stage2::Stage2(Context* context) :
 //void Stage2::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
 void Stage2::Setup(ApplicationHandler* applicationHandler)
 {
+    stateData_ = new StateData(context_);
+    //this is throwing a compiler warning, need to know how to initialize the array right
+    //LOGINFO(stateData_->GetName(0));
 
     applicationHandler_ = applicationHandler;
 	scene_ = applicationHandler->scene_;
@@ -122,7 +126,7 @@ void Stage2::Setup(ApplicationHandler* applicationHandler)
         */
 
         stateObjs_[j] = stateNode->CreateComponent<State>();
-        stateObjs_[j]->Setup(j);
+        stateObjs_[j]->Setup(j,stateData_);
         //Character* character_ = 
 
     }

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "../game/Actor.h"
+#include "StateData.h"
 //#include "../core/ApplicationInput.h"
 
 using namespace Urho3D;
@@ -27,21 +28,21 @@ public:
 
     static void RegisterObject(Context* context);
     virtual void FixedUpdate(float timeStep);
-    virtual void Setup(uint index);
+    virtual void Setup(uint index, StateData* stateData);
 
 protected:
 
     virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
 
-    ApplicationInput* applicationInput_ = NULL;
+    //ApplicationInput* applicationInput_ = NULL;
 
 private:
 
-    int id_;
+    unsigned id_;
 
-    const String states_mdl_[50];
-    const String states_name_[50];
-    const Vector3 positions_[50];
+    //const String states_mdl_[50];
+    //const String states_name_[50];
+    //const Vector3 positions_[50];
     //stored data from stateData
     String name_;
     String mdl_;

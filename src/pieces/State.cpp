@@ -27,6 +27,7 @@
 //-------
 
 #include "State.h"
+#include "StateData.h"
 //#include "../core/ApplicationInput.h"
 
 #include <Urho3D/DebugNew.h>
@@ -48,14 +49,15 @@ void State::RegisterObject(Context* context)
 
 void State::FixedUpdate(float timeStep)
 {
-    Actor::FixedUpdate(timeStep);
+    //Actor::FixedUpdate(timeStep); 
+    //this is causing shit to fuck up, if i call the above function, its making shit not load up roght
     //LOGINFO("hahah");
     //something
 }
 
-void State::Setup(uint index)
+void State::Setup(unsigned index,StateData* stateData)
 {
-    const String states_mdl_[50] = 
+    /*const String states_mdl_[50] = 
     {
         String("state_1.001.mdl"),
         String("state_2.001.mdl"),
@@ -215,22 +217,23 @@ void State::Setup(uint index)
         Vector3(2.24017524719f,-0.00619999971241f,0.882490038872f),
         Vector3(2.32092523575f,-0.0052499989979f,1.23307991028f),
         Vector3(2.81634521484f,-0.00429999921471f,1.25435996056f)
-    };
+    };*/
 
     id_ = index;
 
-    name_ = states_name_[index];
-    mdl_ = states_mdl_[index];
-    home_ = positions_[index];
+    name_ = stateData->GetName(index);
+    mdl_ = stateData->GetMdl(index);
+    home_ = stateData->GetPosition(index);
 
-    LOGINFO(states_name_[index]);
+    //LOGINFO(states_name_[index]);
 
     ResourceCache* cache = GetSubsystem<ResourceCache>();
 
-    Vector3 corrected = home_*10.0f;
+    Vector3 corrected = Vector3(home_.z_,home_.y_,home_.x_)*10.0f;
+    //Vector3 corrected = Vector3(0.0f,4.0f,0.0f);
     node_->SetPosition(corrected);
     StaticModel* stateModel = node_->CreateComponent<StaticModel>();
-    //stateModel->SetModel( cache->GetResource<Model>(String("Models/States/")+states_[j]) );
+    //stateModel->SetModel( cache->GetResource<Model>("Models/States/state_6.001.mdl") );
     stateModel->SetModel( cache->GetResource<Model>(String( "Models/States/state_"+String(index+1)+".001.mdl" ) ) );
     
     RigidBody* body = node_->CreateComponent<RigidBody>();
@@ -241,7 +244,7 @@ void State::Setup(uint index)
     
     //LOGINFO(home_.ToString());
 
-    node_->SetPosition(node_->GetWorldPosition()+Vector3(0.0f,2.0f+float(index)*1.5,0.0f));
+    //node_->SetPosition(node_->GetWorldPosition()+Vector3(0.0f,2.0f+float(index)*1.5,0.0f));
     
 
     /*ResourceCache* cache = GetSubsystem<ResourceCache>();

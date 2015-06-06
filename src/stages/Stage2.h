@@ -6,6 +6,7 @@
 //#include <string>
 #include <Urho3D/Core/Object.h>
 #include "../core/ApplicationHandler.h"
+#include "../pieces/StateData.h"
 #include "../pieces/State.h"
 
 using namespace Urho3D;
@@ -38,6 +39,7 @@ protected:
     //SharedPtr<Node> cameraNode_;
     ApplicationHandler* applicationHandler_;
 
+    StateData* stateData_;
     State* stateObjs_[50]; 
     
 };
