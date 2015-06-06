@@ -33,9 +33,9 @@ protected:
     float duration_;
     float timeIncrement_;
 
-    uint creatorID_;
+    unsigned creatorID_;
 
-    uint collision_layer_;//=1;
-    uint collision_mask_;//=60;
+    unsigned collision_layer_;//=1;
+    unsigned collision_mask_;//=60;
 };
 #endif

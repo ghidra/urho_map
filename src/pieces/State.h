@@ -28,7 +28,7 @@ public:
 
     static void RegisterObject(Context* context);
     virtual void FixedUpdate(float timeStep);
-    virtual void Setup(uint index, StateData* stateData);
+    virtual void Setup(unsigned index, StateData* stateData);
 
 protected:
 
