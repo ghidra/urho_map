@@ -51,6 +51,9 @@ public:
 
     ApplicationInput * applicationInput_ = NULL;
 
+    /// Flag for drawing debug geometry.
+    bool drawDebug_;
+
 protected:
     /// Return XML patch instructions for screen joystick layout for a specific sample app, if any.
     //virtual String GetScreenJoystickPatchString() const { return String::EMPTY; }
@@ -96,8 +99,6 @@ protected:
     unsigned screenJoystickSettingsIndex_;
     /// Pause flag.
     bool paused_;
-    /// Flag for drawing debug geometry.
-    bool drawDebug_;
 
 };
 
