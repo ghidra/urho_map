@@ -18,6 +18,7 @@ namespace Urho3D
     class Controls;
     class Engine;
     class Node;
+    class Ray;
 }
 
 const int CTRL_UP = 1;
@@ -38,6 +39,7 @@ public:
     ApplicationInput(Context* context);
 
     bool GetQuit(){return quit_;};
+    Ray GetMouseRay() const;
 
     void SetCameraNode(SharedPtr<Node> cameraNode);
     //these all just get passes along
@@ -49,6 +51,7 @@ public:
     //void Possess(Actor* actor);
 
     void HandleUpdate(StringHash eventType, VariantMap& eventData);//this is called from outside this class
+    void UpdateHover();// called during Update
 
     Controls controls_;
 
