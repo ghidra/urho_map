@@ -82,6 +82,10 @@ void ApplicationHandler::Start()
     // Create logo
     //CreateLogo();
 
+    //mouse cursor
+    //GetSubsystem<Input>()->SetMouseVisible(true); ..OS cursor
+    //GetSubsystem<UI>()->GetCursor()->SetVisible(true);
+
     // Set custom window Title & Icon
     SetWindowTitleAndIcon();
 
@@ -99,6 +103,7 @@ void ApplicationHandler::Start()
 
     // Hook up to the frame update and render post-update events
     SubscribeToEvents();
+
     //-------
 
     // Subscribe key down event

@@ -40,9 +40,6 @@ private:
 
     unsigned id_;
 
-    //const String states_mdl_[50];
-    //const String states_name_[50];
-    //const Vector3 positions_[50];
     //stored data from stateData
     String name_;
     String mdl_;
