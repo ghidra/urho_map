@@ -9,6 +9,7 @@
 #include <Urho3D/Scene/SceneEvents.h>
 
 #include "CameraLogic.h"
+#include "ApplicationHandler.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -115,8 +116,8 @@ void CameraLogic::FixedUpdate(float timeStep)
     }
 
     // Toggle debug geometry with space
-    //if (input->GetKeyPress(KEY_SPACE))
-    //    drawDebug_ = !drawDebug_;
+    if (input->GetKeyPress(KEY_SPACE))
+        GetSubsystem<ApplicationHandler>()->drawDebug_ = !GetSubsystem<ApplicationHandler>()->drawDebug_;
     
     //LOGINFO("updating i guess");
 }

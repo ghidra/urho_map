@@ -24,6 +24,7 @@
 
 #include "Stage1.h"
 //#include "../core/CameraLogic.h"
+#include "../core/PickingComponent.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -218,6 +219,7 @@ void Stage1::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
         stateNode->SetPosition(corrected);
         StaticModel* stateModel = stateNode->CreateComponent<StaticModel>();
         stateModel->SetModel( cache->GetResource<Model>(String("Models/States/")+states_[j]) );
+        stateNode->CreateComponent<PickingComponent>();
         
         LOGINFO(positions_[j].ToString());
     }

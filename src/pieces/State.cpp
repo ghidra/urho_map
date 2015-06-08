@@ -29,6 +29,7 @@
 #include "State.h"
 #include "StateData.h"
 //#include "../core/ApplicationInput.h"
+#include "../core/PickingComponent.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -276,6 +277,9 @@ void State::Setup(unsigned index,StateData* stateData)
 
     //we still need to setup the collisionshape in the child class
     */
+
+    node_->CreateComponent<PickingComponent>();
+
 }
 
 void State::HandleNodeCollision(StringHash eventType, VariantMap& eventData)

@@ -50,8 +50,10 @@ ApplicationHandler::ApplicationHandler(Context* context) :
     touchEnabled_(false),
     screenJoystickIndex_(M_MAX_UNSIGNED),
     screenJoystickSettingsIndex_(M_MAX_UNSIGNED),
+    drawDebug_(false),
     paused_(false)
 {
+    context->RegisterSubsystem(this);
     //CameraLogic::RegisterObject(context);
     //context->RegisterFactory<CameraLogic>();
 }
