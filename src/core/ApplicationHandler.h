@@ -5,12 +5,13 @@
 #pragma once
 
 #include <Urho3D/Engine/Application.h>
+#include <Urho3D/Scene/Node.h>
 #include "ApplicationInput.h"
 
 namespace Urho3D
 {
 
-class Node;
+class Drawable;
 class Scene;
 class Sprite;
 
@@ -45,10 +46,14 @@ public:
     /// Cleanup after the main loop. Called by Application.
     virtual void Stop();
 
+    Node* TopLevelNodeFromDrawable(Drawable* drawable) const;
+
     SharedPtr<Scene> scene_;
     /// Camera scene node.
     SharedPtr<Node> cameraNode_;
-
+    /// Hover node.
+    SharedPtr<Node> hoverNode_;
+    bool hoverEnabled_;
     ApplicationInput * applicationInput_ = NULL;
 
     /// Flag for drawing debug geometry.
@@ -74,7 +79,6 @@ protected:
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
     /// Handle the post-render update event.
     void HandlePostRenderUpdate(StringHash eventType, VariantMap& eventData);
-    
     
     /// Flag to indicate whether touch input has been enabled.
     bool touchEnabled_;

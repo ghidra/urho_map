@@ -13,6 +13,9 @@
 #include <Urho3D/Engine/Engine.h>
 #include <Urho3D/IO/FileSystem.h>
 #include <Urho3D/Input/InputEvents.h>
+#include <Urho3D/Math/Ray.h>
+#include <Urho3D/Graphics/Octree.h>
+
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Scene/SceneEvents.h>
@@ -30,7 +33,8 @@
 
 #include "ApplicationInput.h"
 #include "CameraLogic.h"
-//#include "ApplicationHandler.h"
+#include "ApplicationHandler.h"
+#include "PickingComponent.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -129,6 +133,8 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
     UI* ui = GetSubsystem<UI>();
     if (!ui->GetFocusElement())
     {
+        UpdateHover();
+
         //if (!touch_ || !touch_->useGyroscope_)
         //{
         controls_.Set(CTRL_UP, input->GetKeyDown('W'));
@@ -136,13 +142,12 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
         controls_.Set(CTRL_LEFT, input->GetKeyDown('A'));
         controls_.Set(CTRL_RIGHT, input->GetKeyDown('D'));
         //}
-        if(input->GetKeyDown(KEY_LCTRL) || input->GetKeyPress(KEY_LCTRL) || input->GetMouseButtonDown(MOUSEB_LEFT) || input->GetMouseButtonPress(MOUSEB_LEFT) )
+        if(input->GetKeyDown(KEY_LCTRL) || input->GetKeyPress(KEY_RCTRL) || input->GetMouseButtonDown(MOUSEB_LEFT) || input->GetMouseButtonPress(MOUSEB_LEFT) )
         {
             controls_.Set(CTRL_FIRE, true);
         }
         controls_.Set(CTRL_JUMP, input->GetKeyDown(KEY_SPACE));
 
-    
     }
     //now if we have possessed something, we can send it commands
     /*if(actor_)
@@ -368,4 +373,55 @@ void ApplicationInput::HandleTouchBegin(StringHash eventType, VariantMap& eventD
     // On some platforms like Windows the presence of touch input can only be detected dynamically
     InitTouchInput();
     UnsubscribeFromEvent("TouchBegin");
+}
+
+Ray ApplicationInput::GetMouseRay() const
+{
+    // Construct a ray based on current mouse coordinates.
+    Camera* camera = cameraNode_->GetComponent<Camera>();
+    Graphics* graphics = GetSubsystem<Graphics>();
+    IntVector2 pos = GetSubsystem<UI>()->GetCursorPosition();
+    return camera->GetScreenRay((float)pos.x_ / graphics->GetWidth(), (float)pos.y_ / graphics->GetHeight());
+}
+
+void ApplicationInput::UpdateHover()
+{
+    ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
+    if (!appHandler->hoverEnabled_)
+        return;
+
+    Graphics* graphics = GetSubsystem<Graphics>();
+    Ray ray = GetMouseRay();
+    Vector3 hitPos;
+
+    PODVector<RayQueryResult> results;
+    RayOctreeQuery query(results, ray, RAY_TRIANGLE, M_INFINITY, DRAWABLE_GEOMETRY);
+    appHandler->scene_->GetComponent<Octree>()->RaycastSingle(query);
+    if (results.Size())
+    {
+        RayQueryResult& result = results[0];
+        Vector3& hitPos = result.position_;
+        Drawable* hitDrawable = result.drawable_;
+
+        Node* hitNode = appHandler->TopLevelNodeFromDrawable(hitDrawable);
+        String debugHover = String((hitNode ? hitNode->GetName() : "") + " @ " + hitPos.ToString());
+        GetSubsystem<DebugHud>()->SetAppStats("hitNode:", debugHover);
+
+        if (hitNode)
+        {
+            if (appHandler->hoverNode_)
+            {
+                if (appHandler->hoverNode_ != hitNode)
+                {
+                    appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
+                }
+            }
+            hitNode->SendEvent(E_HOVEROVER);
+            appHandler->hoverNode_ = hitNode;
+        }
+    }
+    else if (appHandler->hoverNode_)
+    {
+        appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
+    }
 }

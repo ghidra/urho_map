@@ -31,6 +31,7 @@
 #include <Urho3D/UI/Font.h>
 #include <Urho3D/Graphics/Light.h>
 #include <Urho3D/Graphics/Material.h>
+#include <Urho3D/Graphics/Drawable.h>
 #include <Urho3D/Graphics/Model.h>
 #include <Urho3D/Graphics/Octree.h>
 #include <Urho3D/UI/UI.h>
@@ -50,6 +51,8 @@ ApplicationHandler::ApplicationHandler(Context* context) :
     touchEnabled_(false),
     screenJoystickIndex_(M_MAX_UNSIGNED),
     screenJoystickSettingsIndex_(M_MAX_UNSIGNED),
+    hoverNode_(NULL),
+    hoverEnabled_(true),
     drawDebug_(false),
     paused_(false)
 {
@@ -256,4 +259,19 @@ void ApplicationHandler::HandlePostRenderUpdate(StringHash eventType, VariantMap
     // bones properly
     if (drawDebug_)
         GetSubsystem<Renderer>()->DrawDebugGeometry(false);
+}
+
+Node* ApplicationHandler::TopLevelNodeFromDrawable(Drawable* drawable) const
+{
+    Node* n = drawable->GetNode();
+    if (!n)
+        return NULL;
+    while (n->GetParent() != scene_)
+    {
+        if (n->GetParent() == NULL)
+            return NULL;
+        else
+            n = n->GetParent();
+    }
+    return n;
 }
