@@ -406,13 +406,13 @@ void ApplicationInput::UpdateHover()
         Node* hitNode = appHandler->TopLevelNodeFromDrawable(hitDrawable);
         String debugHover = String((hitNode ? hitNode->GetName() : "") + " @ " + hitPos.ToString());
         GetSubsystem<DebugHud>()->SetAppStats("hitNode:", debugHover);
-
         if (hitNode)
         {
             if (appHandler->hoverNode_)
             {
                 if (appHandler->hoverNode_ != hitNode)
                 {
+                    LOGINFO("we are over something");
                     appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
                 }
             }
