@@ -65,6 +65,7 @@ void State::Setup(unsigned index,StateData* stateData)
     home_ = stateData->GetPosition(index);
 
     //LOGINFO(states_name_[index]);
+    node_->SetName(name_);//rename the node
 
     ResourceCache* cache = GetSubsystem<ResourceCache>();
 

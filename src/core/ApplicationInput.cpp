@@ -412,16 +412,27 @@ void ApplicationInput::UpdateHover()
             {
                 if (appHandler->hoverNode_ != hitNode)
                 {
-                    //LOGINFO("we are over something");
-                    appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
+                    PickingComponent* pc = appHandler->hoverNode_->GetComponent<PickingComponent>();
+                    if(pc){
+                        pc->UnHoverOver();
+                    }
+                    //appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
                 }
             }
-            hitNode->SendEvent(E_HOVEROVER);
-            appHandler->hoverNode_ = hitNode;
+            //hitNode->SendEvent(E_HOVEROVER);
+            PickingComponent* pc = hitNode->GetComponent<PickingComponent>();
+            if(pc){
+                pc->HoverOver();
+                appHandler->hoverNode_ = hitNode;
+            }
         }
     }
     else if (appHandler->hoverNode_)
     {
-        appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
+        PickingComponent* pc = appHandler->hoverNode_->GetComponent<PickingComponent>();
+        if(pc){
+            pc->UnHoverOver();
+        }
+        //appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
     }
 }

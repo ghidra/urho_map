@@ -13,6 +13,9 @@
 #include <Urho3D/Math/Vector2.h>
 #include <Urho3D/Graphics/Viewport.h>
 
+#include <Urho3D/DebugNew.h>
+#include <Urho3D/IO/Log.h>
+
 
 PickingComponent::PickingComponent(Context* context):
   Component(context), textNode_(NULL), text_(NULL), graphics_(GetSubsystem<Graphics>()), renderer_(GetSubsystem<Renderer>()) {
@@ -37,8 +40,8 @@ void PickingComponent::OnNodeSet(Node* node) {
   text_->SetTextEffect(TE_SHADOW);
 
   SubscribeToEvent(E_UPDATE, HANDLER(PickingComponent, HandleUpdate));
-  node_->SubscribeToEvent(E_HOVEROVER, HANDLER(PickingComponent, HandleHoverOver));
-  SubscribeToEvent(node, E_UNHOVEROVER, HANDLER(PickingComponent, HandleUnHoverOver));
+  //node_->SubscribeToEvent(E_HOVEROVER, HANDLER(PickingComponent, HandleHoverOver));
+  //node_->SubscribeToEvent(node, E_UNHOVEROVER, HANDLER(PickingComponent, HandleUnHoverOver));
 }
 
 void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData) {
@@ -49,21 +52,24 @@ void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData)
   text_->SetPosition(textPos);
 }
 
-void PickingComponent::HandleHoverOver(StringHash eventType, VariantMap& eventData) {
-  Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
+//void PickingComponent::HandleHoverOver(StringHash eventType, VariantMap& eventData) {
+void PickingComponent::HoverOver() {
+  /*Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
   if (!drawable) {
     drawable = static_cast<Drawable*>(node_->GetComponent<AnimatedModel>());
   }
   if (drawable) {
     BoundingBox box = drawable->GetBoundingBox();
     textNode_->SetPosition(node_->GetPosition() + Vector3(0, box.Size().y_, 0));
-  }
+  }*/
+  textNode_->SetPosition(node_->GetPosition());
   text_->SetText(node_->GetName());
 
 //    SubscribeToEvent(node_, E_UPDATE, HANDLER(PickingComponent, HandleUpdate));
 }
 
-void PickingComponent::HandleUnHoverOver(StringHash eventType, VariantMap& eventData) {
+//void PickingComponent::HandleUnHoverOver(StringHash eventType, VariantMap& eventData) {
+void PickingComponent::UnHoverOver() {
   text_->SetText("");
 
 //    UnsubscribeFromEvent(node_, E_UPDATE);

@@ -86,7 +86,7 @@ void ApplicationHandler::Start()
     //CreateLogo();
 
     //mouse cursor
-    //GetSubsystem<Input>()->SetMouseVisible(true); ..OS cursor
+    GetSubsystem<Input>()->SetMouseVisible(true); //OS cursor
     //GetSubsystem<UI>()->GetCursor()->SetVisible(true);
 
     // Set custom window Title & Icon

@@ -17,8 +17,8 @@ class Graphics;
 class Renderer;
 }
 
-EVENT(E_HOVEROVER, HoverOver) {}
-EVENT(E_UNHOVEROVER, UnHoverOver) {}
+//EVENT(E_HOVEROVER, HoverOver) {}
+//EVENT(E_UNHOVEROVER, UnHoverOver) {}
 
 class PickingComponent: public Component {
   OBJECT(PickingComponent);
@@ -29,11 +29,16 @@ public:
 
   static void RegisterObject(Context* context);
 
+  void HoverOver();
+  void UnHoverOver();
+
 protected:
   void OnNodeSet(Node* node);
   void HandleUpdate(StringHash eventType, VariantMap& eventData);
-  void HandleHoverOver(StringHash eventType, VariantMap& eventData);
-  void HandleUnHoverOver(StringHash eventType, VariantMap& eventData);
+  //void HandleHoverOver(StringHash eventType, VariantMap& eventData);
+  //void HandleUnHoverOver(StringHash eventType, VariantMap& eventData);
+
+  
 
 protected:
   SharedPtr<Node> textNode_;
