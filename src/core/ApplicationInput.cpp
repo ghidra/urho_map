@@ -412,7 +412,7 @@ void ApplicationInput::UpdateHover()
             {
                 if (appHandler->hoverNode_ != hitNode)
                 {
-                    LOGINFO("we are over something");
+                    //LOGINFO("we are over something");
                     appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
                 }
             }
