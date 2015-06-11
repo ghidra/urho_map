@@ -104,6 +104,7 @@ StateData::StateData(Context* context):
     stateMdls_.Push(String("state_47.001.mdl"));
     stateMdls_.Push(String("state_48.001.mdl"));
     stateMdls_.Push(String("state_49.001.mdl"));
+    stateMdls_.Push(String("state_40.001.mdl"));
 
     statePositions_.Push(Vector3(0.21888011694f,0.0156500004232f,2.09723997116f));
     statePositions_.Push(Vector3(2.54229521751f,-0.00904999952763f,1.75292992592f));
