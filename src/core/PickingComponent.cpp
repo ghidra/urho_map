@@ -54,15 +54,15 @@ void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData)
 
 //void PickingComponent::HandleHoverOver(StringHash eventType, VariantMap& eventData) {
 void PickingComponent::HoverOver() {
-  /*Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
+  Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
   if (!drawable) {
     drawable = static_cast<Drawable*>(node_->GetComponent<AnimatedModel>());
   }
   if (drawable) {
     BoundingBox box = drawable->GetBoundingBox();
     textNode_->SetPosition(node_->GetPosition() + Vector3(0, box.Size().y_, 0));
-  }*/
-  textNode_->SetPosition(node_->GetPosition());
+  }
+  //textNode_->SetPosition(node_->GetPosition());
   text_->SetText(node_->GetName());
 
 //    SubscribeToEvent(node_, E_UPDATE, HANDLER(PickingComponent, HandleUpdate));

@@ -54,6 +54,7 @@ public:
     /// Hover node.
     SharedPtr<Node> hoverNode_;
     bool hoverEnabled_;
+    bool hoverHold_;//for when mouse pressed, we will hold the piece
     ApplicationInput * applicationInput_ = NULL;
 
     /// Flag for drawing debug geometry.

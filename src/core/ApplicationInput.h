@@ -71,6 +71,8 @@ private:
 
     virtual String GetScreenJoystickPatchString() const { return String::EMPTY; }
 
+    void UpdateGrab();
+
     /// Movement controls. Assigned by the main program each frame.
     
 

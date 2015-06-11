@@ -134,6 +134,7 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
     if (!ui->GetFocusElement())
     {
         UpdateHover();
+        UpdateGrab();
 
         //if (!touch_ || !touch_->useGyroscope_)
         //{
@@ -295,7 +296,6 @@ void ApplicationInput::HandleKeyDown(StringHash eventType, VariantMap& eventData
                 input->SetScreenJoystickVisible(screenJoystickSettingsIndex_, paused_);
         }
 
-        // Texture quality
         else if (key == '1')
         {
             int quality = renderer->GetTextureQuality();
@@ -435,4 +435,31 @@ void ApplicationInput::UpdateHover()
         }
         //appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
     }
+}
+
+void ApplicationInput::UpdateGrab()
+{
+    Input* input = GetSubsystem<Input>();
+    ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
+    if (!appHandler->hoverEnabled_)
+        return;
+
+    //input->GetMouseButtonDown(MOUSEB_LEFT) || input->GetMouseButtonPress(MOUSEB_LEFT)
+    //check to see if we are intialting a grab
+    if(appHandler->hoverNode_ && !appHandler->hoverHold_ && input->GetMouseButtonPress(MOUSEB_LEFT))
+    {
+        appHandler->hoverHold_=true;
+    }
+    else if(!input->GetMouseButtonDown(MOUSEB_LEFT) && appHandler->hoverHold_)
+    {
+        appHandler->hoverHold_=false;
+    }
+    //lets do some dragging
+    else if(appHandler->hoverNode_ && appHandler->hoverHold_ && input->GetMouseButtonDown(MOUSEB_LEFT))
+    {
+        //drag the node around
+    }
+    //debigging
+    String debugHold = String(appHandler->hoverHold_);
+    GetSubsystem<DebugHud>()->SetAppStats("Holding:", debugHold);
 }
