@@ -42,7 +42,7 @@
 
 
 // Expands to this example's entry-point
-DEFINE_APPLICATION_MAIN(Main)
+URHO3D_DEFINE_APPLICATION_MAIN(Main)
 
 Main::Main(Context* context) :
     ApplicationHandler(context)
@@ -81,7 +81,7 @@ void Main::Start()
 void Main::SubscribeToEvents()
 {
     // Subscribe HandleUpdate() function for processing update events
-    SubscribeToEvent(E_UPDATE, HANDLER(Main, HandleUpdate));
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Main, HandleUpdate));
 }
 
 void Main::HandleUpdate(StringHash eventType, VariantMap& eventData)

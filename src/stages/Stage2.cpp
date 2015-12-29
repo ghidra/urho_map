@@ -47,7 +47,7 @@ void Stage2::Setup(ApplicationHandler* applicationHandler)
 {
     stateData_ = new StateData(context_);
     //this is throwing a compiler warning, need to know how to initialize the array right
-    //LOGINFO(stateData_->GetName(0));
+    //URHO3D_LOGINFO(stateData_->GetName(0));
 
     applicationHandler_ = applicationHandler;
 	scene_ = applicationHandler->scene_;

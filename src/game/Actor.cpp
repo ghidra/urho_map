@@ -28,7 +28,7 @@ Actor::Actor(Context* context) :
 
 void Actor::FixedUpdate(float timeStep)
 {
-    //LOGINFO("inside actor fixedupdate");
+    //URHO3D_LOGINFO("inside actor fixedupdate");
 	timeIncrement_+=timeStep;
     // Disappear when duration expired
     if (duration_ >= 0){
