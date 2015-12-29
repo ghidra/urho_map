@@ -8,3 +8,13 @@ CMake
 CMakeFiles/
 launch.sh
 bin/Resources/Models/States/*
+.clang
+.codelite
+*.lnk
+*.json
+*.project
+*.workspace
+*.exe
+*.dll
+*.cmd
+build/
