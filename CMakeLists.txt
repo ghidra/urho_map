@@ -1,7 +1,7 @@
 # Set project name
-project (urho_vania)
+project (urho_map)
 # Set minimum version
-cmake_minimum_required (VERSION 2.8.6)
+cmake_minimum_required (VERSION 2.8.12)
 if (COMMAND cmake_policy)
     cmake_policy (SET CMP0003 NEW)
     if (CMAKE_VERSION VERSION_GREATER 2.8.12 OR CMAKE_VERSION VERSION_EQUAL 2.8.12)
@@ -19,15 +19,11 @@ endif ()
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 # Include Urho3D Cmake common module
 include (Urho3D-CMake-common)
-# Find Urho3D library
-find_package (Urho3D REQUIRED)
 include_directories (${URHO3D_INCLUDE_DIRS})
 # Define target name
 set (TARGET_NAME map)
 
 # Define source files
-#define_source_files (GLOB_CPP_PATTERNS src/*.cpp src/*.cc GLOB_H_PATTERNS src/*.h)
-
 define_source_files (GLOB_CPP_PATTERNS src/*.c* GLOB_H_PATTERNS src/*.h* RECURSE GROUP )
 
 # Setup target with resource copying
