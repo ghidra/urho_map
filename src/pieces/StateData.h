@@ -20,7 +20,7 @@ using namespace Urho3D;
 
 class StateData : public Object
 {
-    OBJECT(StateData);
+    URHO3D_OBJECT(StateData, Object);
 
 public:
     /// Construct.

@@ -51,7 +51,7 @@ void State::FixedUpdate(float timeStep)
 {
     //Actor::FixedUpdate(timeStep); 
     //this is causing shit to fuck up, if i call the above function, its making shit not load up roght
-    //LOGINFO("hahah");
+    //URHO3D_LOGINFO("hahah");
     //something
 }
 

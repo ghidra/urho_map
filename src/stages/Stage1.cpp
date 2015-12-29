@@ -221,7 +221,7 @@ void Stage1::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
         stateModel->SetModel( cache->GetResource<Model>(String("Models/States/")+states_[j]) );
         stateNode->CreateComponent<PickingComponent>();
         
-        LOGINFO(positions_[j].ToString());
+        URHO3D_LOGINFO(positions_[j].ToString());
     }
     /*Node* stateNode = scene_->CreateChild("state");
     stateNode->SetPosition(positions_[0]);

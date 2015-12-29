@@ -20,7 +20,7 @@ class Scene;
 class State : public Actor
 {
 
-    OBJECT(State);
+    URHO3D_OBJECT(State, Actor);
 
 public:
 
