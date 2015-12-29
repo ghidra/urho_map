@@ -28,7 +28,6 @@ include_directories (${URHO3D_INCLUDE_DIRS})
 # Define target name
 set (TARGET_NAME map)
 
-# Put binary in root.
 set_output_directories(${CMAKE_BINARY_DIR}/../bin RUNTIME PDB)
 
 # Define source files
