@@ -39,9 +39,9 @@ void PickingComponent::OnNodeSet(Node* node) {
   text_->SetAlignment(HA_CENTER, VA_CENTER);
   text_->SetTextEffect(TE_SHADOW);
 
-  SubscribeToEvent(E_UPDATE, HANDLER(PickingComponent, HandleUpdate));
-  //node_->SubscribeToEvent(E_HOVEROVER, HANDLER(PickingComponent, HandleHoverOver));
-  //node_->SubscribeToEvent(node, E_UNHOVEROVER, HANDLER(PickingComponent, HandleUnHoverOver));
+  SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(PickingComponent, HandleUpdate));
+  //node_->SubscribeToEvent(E_HOVEROVER, URHO3D_HANDLER(PickingComponent, HandleHoverOver));
+  //node_->SubscribeToEvent(node, E_UNHOVEROVER, URHO3D_HANDLER(PickingComponent, HandleUnHoverOver));
 }
 
 void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData) {
@@ -65,7 +65,7 @@ void PickingComponent::HoverOver() {
   //textNode_->SetPosition(node_->GetPosition());
   text_->SetText(node_->GetName());
 
-//    SubscribeToEvent(node_, E_UPDATE, HANDLER(PickingComponent, HandleUpdate));
+//    SubscribeToEvent(node_, E_UPDATE, URHO3D_HANDLER(PickingComponent, HandleUpdate));
 }
 
 //void PickingComponent::HandleUnHoverOver(StringHash eventType, VariantMap& eventData) {

@@ -72,7 +72,7 @@ void CameraLogic::FixedUpdate(float timeStep)
 
     if(cameraType_ == String("default"))
     {
-        LOGINFO("updating i guess");
+        URHO3D_LOGINFO("updating i guess");
         //this is the default "debug" behavior of the camera
         // Use this frame's mouse motion to adjust camera node yaw and pitch. Clamp the pitch between -90 and 90 degrees
         IntVector2 mouseMove = input->GetMouseMove();
@@ -119,7 +119,7 @@ void CameraLogic::FixedUpdate(float timeStep)
     if (input->GetKeyPress(KEY_SPACE))
         GetSubsystem<ApplicationHandler>()->drawDebug_ = !GetSubsystem<ApplicationHandler>()->drawDebug_;
     
-    //LOGINFO("updating i guess");
+    //URHO3D_LOGINFO("updating i guess");
 }
 
 Vector3 CameraLogic::SmoothPosition(float timeStep) {

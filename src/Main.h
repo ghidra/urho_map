@@ -9,7 +9,7 @@
 
 class Main : public ApplicationHandler
 {
-    OBJECT(Main);
+    URHO3D_OBJECT(Main, ApplicationHandler);
 
 public:
     /// Construct.

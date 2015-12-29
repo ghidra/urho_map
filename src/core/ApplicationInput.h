@@ -32,7 +32,7 @@ const int CTRL_ALL = 63;
 
 class ApplicationInput : public Object
 {
-    OBJECT(ApplicationInput);
+    URHO3D_OBJECT(ApplicationInput, Object);
 
 public:
     /// Construct.

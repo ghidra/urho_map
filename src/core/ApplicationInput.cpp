@@ -52,12 +52,12 @@ ApplicationInput::ApplicationInput(Context* context):
         InitTouchInput();
     else if (GetSubsystem<Input>()->GetNumJoysticks() == 0)
         // On desktop platform, do not detect touch when we already got a joystick
-        SubscribeToEvent(E_TOUCHBEGIN, HANDLER(ApplicationInput, HandleTouchBegin));
+        SubscribeToEvent(E_TOUCHBEGIN, URHO3D_HANDLER(ApplicationInput, HandleTouchBegin));
 
     // Subscribe key down event
-    SubscribeToEvent(E_KEYDOWN, HANDLER(ApplicationInput, HandleKeyDown));
+    SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(ApplicationInput, HandleKeyDown));
     // Subscribe scene update event
-    //SubscribeToEvent(E_SCENEUPDATE, HANDLER(ApplicationInput, HandleSceneUpdate));
+    //SubscribeToEvent(E_SCENEUPDATE, URHO3D_HANDLER(ApplicationInput, HandleSceneUpdate));
     //update is called from the class using this class to ahndle input, main.cpp
 }
 
@@ -121,7 +121,7 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
 
     controls_.Set(CTRL_UP | CTRL_DOWN | CTRL_LEFT | CTRL_RIGHT | CTRL_FIRE |CTRL_JUMP, false);
 
-    //LOGINFO("hi");
+    //URHO3D_LOGINFO("hi");
 
     //if(actor_)
     //{
@@ -336,10 +336,10 @@ void ApplicationInput::HandleKeyDown(StringHash eventType, VariantMap& eventData
         // Shadow depth and filtering quality
         else if (key == '6')
         {
-            int quality = renderer->GetShadowQuality();
-            ++quality;
-            if (quality > SHADOWQUALITY_HIGH_24BIT)
-                quality = SHADOWQUALITY_LOW_16BIT;
+            ShadowQuality quality = renderer->GetShadowQuality();
+            quality = (ShadowQuality)(quality + 1);
+            if (quality > SHADOWQUALITY_PCF_24BIT)
+                quality = SHADOWQUALITY_PCF_16BIT;
             renderer->SetShadowQuality(quality);
         }
         

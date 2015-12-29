@@ -17,11 +17,11 @@ class Graphics;
 class Renderer;
 }
 
-//EVENT(E_HOVEROVER, HoverOver) {}
-//EVENT(E_UNHOVEROVER, UnHoverOver) {}
+//URHO3D_EVENT(E_HOVEROVER, HoverOver) {}
+//URHO3D_EVENT(E_UNHOVEROVER, UnHoverOver) {}
 
 class PickingComponent: public Component {
-  OBJECT(PickingComponent);
+  URHO3D_OBJECT(PickingComponent, Component);
 
 public:
   PickingComponent(Context* context);

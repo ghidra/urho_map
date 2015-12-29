@@ -33,7 +33,7 @@ using namespace Urho3D;
 class ApplicationHandler : public Application
 {
     // Enable type information.
-    OBJECT(ApplicationHandler);
+    URHO3D_OBJECT(ApplicationHandler, Application);
 
 public:
     /// Construct.
