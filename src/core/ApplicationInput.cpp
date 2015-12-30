@@ -336,10 +336,10 @@ void ApplicationInput::HandleKeyDown(StringHash eventType, VariantMap& eventData
         // Shadow depth and filtering quality
         else if (key == '6')
         {
-            ShadowQuality quality = renderer->GetShadowQuality();
-            quality = (ShadowQuality)(quality + 1);
-            if (quality > SHADOWQUALITY_PCF_24BIT)
-                quality = SHADOWQUALITY_PCF_16BIT;
+            int quality = renderer->GetShadowQuality();
+            ++quality;
+            if (quality > SHADOWQUALITY_HIGH_24BIT)
+                quality = SHADOWQUALITY_LOW_16BIT;
             renderer->SetShadowQuality(quality);
         }
         
