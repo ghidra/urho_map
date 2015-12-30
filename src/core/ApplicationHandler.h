@@ -7,6 +7,7 @@
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Scene/Node.h>
 #include "ApplicationInput.h"
+#include "ConfigManager.h"
 
 namespace Urho3D
 {
@@ -48,6 +49,7 @@ public:
 
     Node* TopLevelNodeFromDrawable(Drawable* drawable) const;
 
+    SharedPtr<ConfigManager> cfg_;
     SharedPtr<Scene> scene_;
     /// Camera scene node.
     SharedPtr<Node> cameraNode_;

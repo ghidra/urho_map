@@ -57,6 +57,7 @@ ApplicationHandler::ApplicationHandler(Context* context) :
     paused_(false)
 {
     context->RegisterSubsystem(this);
+    cfg_ = new ConfigManager(context, String::EMPTY, false, false);
     //CameraLogic::RegisterObject(context);
     //context->RegisterFactory<CameraLogic>();
 }
@@ -66,11 +67,51 @@ void ApplicationHandler::Setup()
     // Modify engine startup parameters
     engineParameters_["WindowTitle"] = GetTypeName();
     engineParameters_["LogName"]     = GetSubsystem<FileSystem>()->GetAppPreferencesDir("urho3d", "logs") + GetTypeName() + ".log";
-    engineParameters_["FullScreen"]  = false;
+    engineParameters_["LogLevel"]    = LOG_INFO;
     engineParameters_["Headless"]    = false;
-    engineParameters_["VSync"] = true; // need this on my slow laptop
-    engineParameters_["ResourcePaths"] = "Data;CoreData;Resources";//or
-    //cache->AddResourceDir("Resources");
+    engineParameters_["ResourcePaths"] = "Data;CoreData;Resources";
+
+    // Load config file.
+    String fp("Resources/map.cfg");
+    if (cfg_->Load(fp, true)) {
+        URHO3D_LOGINFO("Configuration file loaded: " + fp);
+    } else {
+        URHO3D_LOGERRORF("Cannot find configuration file: ", fp.CString());
+    }
+
+    if (cfg_->Has("engine", "ResourcePaths")) {
+        engineParameters_["ResourcePaths"] = cfg_->Get("engine", "ResourcePaths");
+    }
+
+    int maxFPS(cfg_->GetInt("engine", "maxFPS", 0));
+    if (maxFPS) {
+        engineParameters_["maxFps"] = maxFPS;
+    }
+
+    bool foundLogArgument(false);
+    for (unsigned i = 0; i < GetArguments().Size(); ++i) {
+        if (GetArguments()[i].ToLower() == "-log") {
+            foundLogArgument = true;
+            break;
+        }
+    }
+    // If not given as program argument, set LogLevel from config.
+    if (!foundLogArgument) {
+        const char* logLevelPrefixes[] = { "DEBUG", "INFO", "WARNING", "ERROR", 0 }; // IO/Log.cpp
+        String logLevel(cfg_->GetString("engine", "LogLevel"));
+        logLevel.ToUpper();
+        unsigned cfgLogLevelIndex(GetStringListIndex(logLevel.CString(), logLevelPrefixes, M_MAX_UNSIGNED));
+        if (cfgLogLevelIndex != M_MAX_UNSIGNED) {
+            GetSubsystem<Log>()->SetLevel(cfgLogLevelIndex);
+            engineParameters_["LogLevel"] = cfgLogLevelIndex;
+        }
+    }
+
+    engineParameters_["WindowWidth"] = cfg_->GetInt("engine", "WindowWidth", 800);
+    engineParameters_["WindowHeight"] = cfg_->GetInt("engine", "WindowHeight", 600);
+    engineParameters_["FullScreen"] = cfg_->GetBool("engine", "FullScreen", false);
+    engineParameters_["VSync"] = cfg_->GetBool("engine", "VSync", true);
+
 }
 
 void ApplicationHandler::Start()
@@ -147,6 +188,7 @@ void ApplicationHandler::CreateConsoleAndDebugHud()
     Console* console = engine_->CreateConsole();
     console->SetDefaultStyle(xmlFile);
     console->GetBackground()->SetOpacity(0.8f);
+    console->SetNumBufferedRows(500);
 
     // Create debug HUD.
     DebugHud* debugHud = engine_->CreateDebugHud();
