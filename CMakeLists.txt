@@ -20,19 +20,19 @@ if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCHE
   add_compile_options(-std=c++11)
 endif()
 
-# Set CMake modules search path
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-# Include Urho3D Cmake common module
-include (Urho3D-CMake-common)
-include_directories (${URHO3D_INCLUDE_DIRS})
-# Define target name
-set (TARGET_NAME map)
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+
+include(Urho3D-CMake-common)
+find_package(Urho3D REQUIRED)
+include_directories(${URHO3D_INCLUDE_DIRS})
+
+set(TARGET_NAME map)
 
 set_output_directories(${CMAKE_BINARY_DIR}/../bin RUNTIME PDB)
 
 # Define source files
-define_source_files (GLOB_CPP_PATTERNS src/*.c* GLOB_H_PATTERNS src/*.h* RECURSE GROUP )
+define_source_files(GLOB_CPP_PATTERNS src/*.c* GLOB_H_PATTERNS src/*.h* RECURSE GROUP )
 
 # Setup target with resource copying
-setup_main_executable ()
+setup_main_executable()
 
