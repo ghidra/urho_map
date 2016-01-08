@@ -41,6 +41,7 @@
 #include "ApplicationInput.h"
 #include "ApplicationHandler.h"
 //#include "CameraLogic.h"
+#include "Cursor3D.h"
 
 #include <Urho3D/IO/Log.h>
 
@@ -246,7 +247,17 @@ void ApplicationHandler::CreateScene()
     Camera* camera = cameraNode_->CreateComponent<Camera>();
     camera->SetFarClip(300.0f);
 
+    // Create a child node of camera, add a Cursor3D component and transform it.
+    cursorBaseNode_ = cameraNode_->CreateChild("CursorBase");
+    cursorBaseNode_->CreateComponent<Cursor3D>();
+    Vector3 planePos(cfg_->GetVector3("scene", "cursor_plane_pos"));
+    Vector3 planeRot(cfg_->GetVector3("scene", "cursor_plane_rot"));
+    cursorBaseNode_->SetPosition(planePos);
+    cursorBaseNode_->SetRotation(Quaternion(planeRot.x_, planeRot.y_, planeRot.z_));
+    // Cache the pointer to the actual cursor node.
+    cursorNode_ = cursorBaseNode_->GetComponent<Cursor3D>()->cursorNode_;
 }
+
 void ApplicationHandler::SetupViewport()
 {
     Renderer* renderer = GetSubsystem<Renderer>();
