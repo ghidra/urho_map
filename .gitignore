@@ -6,6 +6,7 @@ bin/Data
 bin/map
 CMake
 CMakeFiles/
+CMakeLists.txt
 launch.sh
 bin/Resources/Models/States/*
 .clang
