@@ -15,6 +15,7 @@
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
+//#include <Urho3D/Engine/DebugHud.h>
 
 
 PickingComponent::PickingComponent(Context* context):
@@ -54,11 +55,15 @@ void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData)
 
 //void PickingComponent::HandleHoverOver(StringHash eventType, VariantMap& eventData) {
 void PickingComponent::HoverOver() {
+
+  //GetSubsystem<DebugHud>()->SetAppStats(" Picking: ", "happy" );
+
   Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
   if (!drawable) {
     drawable = static_cast<Drawable*>(node_->GetComponent<AnimatedModel>());
   }
   if (drawable) {
+    //URHO3D_LOGWARNING("happy");
     BoundingBox box = drawable->GetBoundingBox();
     textNode_->SetPosition(node_->GetPosition() + Vector3(0, box.Size().y_, 0));
   }
