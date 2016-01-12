@@ -24,6 +24,7 @@ Cursor3D::Cursor3D(Context* context) :
     , appHandler_(GetSubsystem<ApplicationHandler>())
     , graphics_(GetSubsystem<Graphics>())
     , input_(GetSubsystem<Input>())
+    , useSecondary_(false)
 {
 }
 
@@ -51,10 +52,6 @@ void Cursor3D::HandleUpdate(StringHash eventType, VariantMap& eventData) {
     if (!input_->GetMouseButtonDown(MOUSEB_LEFT))
         return;
 
-    // Make our hit plane's transform reflect that of our node.
-    Vector3 planeNormal(node_->GetWorldRotation() * Vector3::FORWARD);
-    hitPlane_.Define(planeNormal, node_->GetWorldPosition());
-
     // Set a new Cursor3D node position from mouse coordinates and plane distance from camera.
     IntVector2 mousePos(input_->GetMousePosition());
     float posX((float)mousePos.x_ / graphics_->GetWidth());
@@ -62,7 +59,35 @@ void Cursor3D::HandleUpdate(StringHash eventType, VariantMap& eventData) {
     Node* camNode(appHandler_->cameraNode_);
     Camera* cam(camNode->GetComponent<Camera>());
     Ray ray(cam->GetScreenRay(posX, posY));
-    float hitDist(ray.HitDistance(hitPlane_));
+#if defined(CURSOR3D_DEBUG)
+        GetSubsystem<DebugHud>()->SetAppStats("mouse pos", String(mousePos.x_ )+":"+String(mousePos.y_ ) );
+        GetSubsystem<DebugHud>()->SetAppStats("mouse pos graphics", String(posX )+":"+String(posY) );
+        GetSubsystem<DebugHud>()->SetAppStats("ray origin", String(ray.origin_) );
+        GetSubsystem<DebugHud>()->SetAppStats("ray direction", String(ray.direction_) );
+#endif
+
+    float hitDist;
+    Vector3 planeNormal;
+
+    if(useSecondary_)
+    {
+#if defined(CURSOR3D_DEBUG)
+        GetSubsystem<DebugHud>()->SetAppStats("use secondary", String("true"));
+#endif
+        hitDist = ray.HitDistance(hitPlaneSecondary_);
+    }
+    else
+    {
+#if defined(CURSOR3D_DEBUG)
+        GetSubsystem<DebugHud>()->SetAppStats("use secondary", String("false"));
+#endif
+        //use the default plane
+        // Make our hit plane's transform reflect that of our node.
+        planeNormal = node_->GetWorldRotation() * Vector3::FORWARD;
+        hitPlane_.Define(planeNormal, node_->GetWorldPosition());
+        hitDist = ray.HitDistance(hitPlane_);
+    }
+    
     Vector3 cursorPos(cam->ScreenToWorldPoint(Vector3(posX, posY, hitDist)));
     cursorNode_->SetWorldPosition(cursorPos);
 
@@ -73,6 +98,17 @@ void Cursor3D::HandleUpdate(StringHash eventType, VariantMap& eventData) {
     node_->GetScene()->GetComponent<DebugRenderer>()->AddNode(cursorNode_);
     GetSubsystem<Renderer>()->DrawDebugGeometry(false);
 #endif
+}
+
+void Cursor3D::SetSecondaryPlane(const Vector3 normal, const Vector3 position, const bool use)
+{
+    hitPlaneSecondary_.Define(normal, position);
+    SetUseSecondary(use);
+}
+
+void Cursor3D::SetUseSecondary(const bool use)
+{
+    useSecondary_ = use;
 }
 
 #if defined(CURSOR3D_DEBUG)

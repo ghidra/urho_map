@@ -28,6 +28,11 @@ public:
     Urho3D::SharedPtr<Urho3D::Node> cursorNode_;
     /// Plane whose transform matches the node's each scene update.
     Urho3D::Plane hitPlane_;
+    Urho3D::Plane hitPlaneSecondary_;
+
+    void SetSecondaryPlane(const Vector3 normal, const Vector3 position, const bool use = true);
+    void SetUseSecondary(const bool use);
+    bool GetUseSecondary(){return useSecondary_;};
 
 protected:
     void OnNodeSet(Urho3D::Node* node);
@@ -38,4 +43,6 @@ protected:
     ApplicationHandler* appHandler_;
     Urho3D::SharedPtr<Urho3D::Graphics> graphics_;
     Urho3D::SharedPtr<Urho3D::Input> input_;
+
+    bool useSecondary_;
 };

@@ -249,13 +249,17 @@ void ApplicationHandler::CreateScene()
 
     // Create a child node of camera, add a Cursor3D component and transform it.
     cursorBaseNode_ = cameraNode_->CreateChild("CursorBase");
-    cursorBaseNode_->CreateComponent<Cursor3D>();
+    Cursor3D* c3d = cursorBaseNode_->CreateComponent<Cursor3D>();
     Vector3 planePos(cfg_->GetVector3("scene", "cursor_plane_pos"));
     Vector3 planeRot(cfg_->GetVector3("scene", "cursor_plane_rot"));
+
     cursorBaseNode_->SetPosition(planePos);
     cursorBaseNode_->SetRotation(Quaternion(planeRot.x_, planeRot.y_, planeRot.z_));
+
+    //set a secondary plane to ray against, for the puzzle plane
+    c3d->SetSecondaryPlane(Vector3::UP, Vector3(0.0f,1.0f,0.0f) );
     // Cache the pointer to the actual cursor node.
-    cursorNode_ = cursorBaseNode_->GetComponent<Cursor3D>()->cursorNode_;
+    cursorNode_ = c3d->cursorNode_;
 }
 
 void ApplicationHandler::SetupViewport()
