@@ -45,6 +45,7 @@ void Cursor3D::OnNodeSet(Node* node) {
 
     // Create a node representing our 3D cursor.
     cursorNode_ = node->GetScene()->CreateChild("Cursor3D");
+    RigidBody* rb = cursorNode_->CreateComponent<RigidBody>();
     Constraint* constraint = cursorNode_->CreateComponent<Constraint>();
     constraint->SetConstraintType(CONSTRAINT_POINT);
     constraint->SetDisableCollision(true);
@@ -66,8 +67,8 @@ void Cursor3D::SetConstrainee(RigidBody* body)
 }
 void Cursor3D::ReleaseConstrainee()
 {
-    Constraint* c = cursorNode_->GetComponent<Constraint>();
-    c->ReleaseConstraint();
+    //Constraint* c = cursorNode_->GetComponent<Constraint>();
+    //c->ReleaseConstraint();
     constrained_=false;
 }
 
