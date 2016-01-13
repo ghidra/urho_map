@@ -47,16 +47,18 @@ public:
     /// Cleanup after the main loop. Called by Application.
     virtual void Stop();
 
-    Node* TopLevelNodeFromDrawable(Drawable* drawable) const;
+    Scene* GetScene(){return scene_;};
+
+    //Node* TopLevelNodeFromDrawable(Drawable* drawable) const;
 
     SharedPtr<ConfigManager> cfg_;
     SharedPtr<Scene> scene_;
     /// Camera scene node.
     SharedPtr<Node> cameraNode_;
     /// Hover node.
-    SharedPtr<Node> hoverNode_;
-    bool hoverEnabled_;
-    bool hoverHold_;//for when mouse pressed, we will hold the piece
+    //SharedPtr<Node> hoverNode_;
+    //bool hoverEnabled_;
+    //bool hoverHold_;//for when mouse pressed, we will hold the piece
     SharedPtr<Node> cursorBaseNode_;
     SharedPtr<Node> cursorNode_;
     ApplicationInput * applicationInput_ = NULL;

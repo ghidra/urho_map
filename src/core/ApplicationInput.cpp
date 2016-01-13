@@ -45,7 +45,9 @@ ApplicationInput::ApplicationInput(Context* context):
     paused_(false),
     quit_(false),
     debugCamera_(false),
-    debugDrawPhysics_(false)
+    debugDrawPhysics_(false),
+    hoverEnabled_(true),
+    hoverNode_(NULL)
 {
     if (GetPlatform() == "Android" || GetPlatform() == "iOS")
         // On mobile platform, enable touch by adding a screen joystick
@@ -134,7 +136,7 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
     if (!ui->GetFocusElement())
     {
         UpdateHover();
-        UpdateGrab();
+        //UpdateGrab();
 
         //if (!touch_ || !touch_->useGyroscope_)
         //{
@@ -150,90 +152,7 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
         controls_.Set(CTRL_JUMP, input->GetKeyDown(KEY_SPACE));
 
     }
-    //now if we have possessed something, we can send it commands
-    /*if(actor_)
-    {
-        actor_->Control(&controls_);
-    }*/
-    //}
 
-    /*if (actor_)
-    {
-        // Clear previous controls
-        character_->controls_.Set(CTRL_FORWARD | CTRL_BACK | CTRL_LEFT | CTRL_RIGHT | CTRL_JUMP, false);
-
-        // Update controls using touch utility class
-        if (touch_)
-            touch_->UpdateTouches(character_->controls_);
-
-        // Update controls using keys
-        UI* ui = GetSubsystem<UI>();
-        if (!ui->GetFocusElement())
-        {
-            if (!touch_ || !touch_->useGyroscope_)
-            {
-                character_->controls_.Set(CTRL_FORWARD, input->GetKeyDown('W'));
-                character_->controls_.Set(CTRL_BACK, input->GetKeyDown('S'));
-                character_->controls_.Set(CTRL_LEFT, input->GetKeyDown('A'));
-                character_->controls_.Set(CTRL_RIGHT, input->GetKeyDown('D'));
-            }
-            character_->controls_.Set(CTRL_JUMP, input->GetKeyDown(KEY_SPACE));
-
-            // Add character yaw & pitch from the mouse motion or touch input
-            if (touchEnabled_)
-            {
-                for (unsigned i = 0; i < input->GetNumTouches(); ++i)
-                {
-                    TouchState* state = input->GetTouch(i);
-                    if (!state->touchedElement_)    // Touch on empty space
-                    {
-                        Camera* camera = cameraNode_->GetComponent<Camera>();
-                        if (!camera)
-                            return;
-
-                        Graphics* graphics = GetSubsystem<Graphics>();
-                        character_->controls_.yaw_ += TOUCH_SENSITIVITY * camera->GetFov() / graphics->GetHeight() * state->delta_.x_;
-                        character_->controls_.pitch_ += TOUCH_SENSITIVITY * camera->GetFov() / graphics->GetHeight() * state->delta_.y_;
-                    }
-                }
-            }
-            else
-            {
-                character_->controls_.yaw_ += (float)input->GetMouseMoveX() * YAW_SENSITIVITY;
-                character_->controls_.pitch_ += (float)input->GetMouseMoveY() * YAW_SENSITIVITY;
-            }
-            // Limit pitch
-            character_->controls_.pitch_ = Clamp(character_->controls_.pitch_, -80.0f, 80.0f);
-
-            // Switch between 1st and 3rd person
-            if (input->GetKeyPress('F'))
-                firstPerson_ = !firstPerson_;
-
-            // Turn on/off gyroscope on mobile platform
-            if (touch_ && input->GetKeyPress('G'))
-                touch_->useGyroscope_ = !touch_->useGyroscope_;
-
-            // Check for loading / saving the scene
-            if (input->GetKeyPress(KEY_F5))
-            {
-                File saveFile(context_, GetSubsystem<FileSystem>()->GetProgramDir() + "Data/Scenes/CharacterDemo.xml", FILE_WRITE);
-                scene_->SaveXML(saveFile);
-            }
-            if (input->GetKeyPress(KEY_F7))
-            {
-                File loadFile(context_, GetSubsystem<FileSystem>()->GetProgramDir() + "Data/Scenes/CharacterDemo.xml", FILE_READ);
-                scene_->LoadXML(loadFile);
-                // After loading we have to reacquire the weak pointer to the Character component, as it has been recreated
-                // Simply find the character's scene node by name as there's only one of them
-                Node* characterNode = scene_->GetChild("Jack", true);
-                if (characterNode)
-                    character_ = characterNode->GetComponent<Character>();
-            }
-        }
-
-        // Set rotation already here so that it's updated every rendering frame instead of every physics frame
-        character_->GetNode()->SetRotation(Quaternion(character_->controls_.yaw_, Vector3::UP));
-    }*/
 }
 
 void ApplicationInput::HandleKeyDown(StringHash eventType, VariantMap& eventData)
@@ -387,9 +306,72 @@ Ray ApplicationInput::GetMouseRay() const
 void ApplicationInput::UpdateHover()
 {
     ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
-    if (!appHandler->hoverEnabled_)
+    if (!hoverEnabled_)
         return;
 
+    Node* hitNode = GetDrawable();
+    if(hitNode!=NULL)
+    {
+        if (hoverNode_)
+        {
+            if (hoverNode_ != hitNode)
+            {
+                PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+                if(pc){
+                    pc->UnHoverOver();
+                }
+            }
+        }
+       
+        PickingComponent* pc = hitNode->GetComponent<PickingComponent>();
+        if(pc){
+            pc->HoverOver();
+            hoverNode_ = hitNode;
+        }
+    }
+    else if(hoverNode_!=NULL)
+    {
+        PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        if(pc){
+            pc->UnHoverOver();
+        }
+    }
+}
+
+void ApplicationInput::UpdateGrab()
+{
+    if (!hoverEnabled_)
+        return;
+
+    Input* input = GetSubsystem<Input>();
+    ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
+
+    //input->GetMouseButtonDown(MOUSEB_LEFT) || input->GetMouseButtonPress(MOUSEB_LEFT)
+    //check to see if we are intialting a grab
+    if(hoverNode_==NULL && !hoverHold_ && input->GetMouseButtonPress(MOUSEB_LEFT))
+    {
+        hoverHold_=true;
+        //set the hoverNode
+    }
+    else if(!input->GetMouseButtonDown(MOUSEB_LEFT) && hoverHold_)
+    {
+        hoverHold_=false;
+        //relase the hoverNode
+    }
+    //lets do some dragging
+    else if(hoverNode_!=NULL && hoverHold_ && input->GetMouseButtonDown(MOUSEB_LEFT))
+    {
+        //drag the node around
+    }
+    //debigging
+    String debugHold = String(hoverHold_);
+    GetSubsystem<DebugHud>()->SetAppStats("Holding:", debugHold);
+}
+// 
+//get the node that we are over
+Node* ApplicationInput::GetDrawable()
+{
+    ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
     Graphics* graphics = GetSubsystem<Graphics>();
     Ray ray = GetMouseRay();
     Vector3 hitPos;
@@ -403,63 +385,29 @@ void ApplicationInput::UpdateHover()
         Vector3& hitPos = result.position_;
         Drawable* hitDrawable = result.drawable_;
 
-        Node* hitNode = appHandler->TopLevelNodeFromDrawable(hitDrawable);
+        Node* hitNode = TopLevelNodeFromDrawable(hitDrawable);
         String debugHover = String((hitNode ? hitNode->GetName() : "") + " @ " + hitPos.ToString());
         GetSubsystem<DebugHud>()->SetAppStats("hitNode:", debugHover);
         if (hitNode)
         {
-            if (appHandler->hoverNode_)
-            {
-                if (appHandler->hoverNode_ != hitNode)
-                {
-                    PickingComponent* pc = appHandler->hoverNode_->GetComponent<PickingComponent>();
-                    if(pc){
-                        pc->UnHoverOver();
-                    }
-                    //appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
-                }
-            }
-            //hitNode->SendEvent(E_HOVEROVER);
-            PickingComponent* pc = hitNode->GetComponent<PickingComponent>();
-            if(pc){
-                pc->HoverOver();
-                appHandler->hoverNode_ = hitNode;
-            }
+            return hitNode;
         }
     }
-    else if (appHandler->hoverNode_)
-    {
-        PickingComponent* pc = appHandler->hoverNode_->GetComponent<PickingComponent>();
-        if(pc){
-            pc->UnHoverOver();
-        }
-        //appHandler->hoverNode_->SendEvent(E_UNHOVEROVER);
-    }
+    return NULL;
 }
 
-void ApplicationInput::UpdateGrab()
+Node* ApplicationInput::TopLevelNodeFromDrawable(Drawable* drawable) const
 {
-    Input* input = GetSubsystem<Input>();
     ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
-    if (!appHandler->hoverEnabled_)
-        return;
-
-    //input->GetMouseButtonDown(MOUSEB_LEFT) || input->GetMouseButtonPress(MOUSEB_LEFT)
-    //check to see if we are intialting a grab
-    if(appHandler->hoverNode_ && !appHandler->hoverHold_ && input->GetMouseButtonPress(MOUSEB_LEFT))
+    Node* n = drawable->GetNode();
+    if (!n)
+        return NULL;
+    while (n->GetParent() != appHandler->GetScene() )
     {
-        appHandler->hoverHold_=true;
+        if (n->GetParent() == NULL)
+            return NULL;
+        else
+            n = n->GetParent();
     }
-    else if(!input->GetMouseButtonDown(MOUSEB_LEFT) && appHandler->hoverHold_)
-    {
-        appHandler->hoverHold_=false;
-    }
-    //lets do some dragging
-    else if(appHandler->hoverNode_ && appHandler->hoverHold_ && input->GetMouseButtonDown(MOUSEB_LEFT))
-    {
-        //drag the node around
-    }
-    //debigging
-    String debugHold = String(appHandler->hoverHold_);
-    GetSubsystem<DebugHud>()->SetAppStats("Holding:", debugHold);
+    return n;
 }

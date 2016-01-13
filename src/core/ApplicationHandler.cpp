@@ -52,8 +52,8 @@ ApplicationHandler::ApplicationHandler(Context* context) :
     touchEnabled_(false),
     screenJoystickIndex_(M_MAX_UNSIGNED),
     screenJoystickSettingsIndex_(M_MAX_UNSIGNED),
-    hoverNode_(NULL),
-    hoverEnabled_(true),
+    //hoverNode_(NULL),
+    //hoverEnabled_(true),
     drawDebug_(false),
     paused_(false)
 {
@@ -318,7 +318,7 @@ void ApplicationHandler::HandlePostRenderUpdate(StringHash eventType, VariantMap
         GetSubsystem<Renderer>()->DrawDebugGeometry(false);
 }
 
-Node* ApplicationHandler::TopLevelNodeFromDrawable(Drawable* drawable) const
+/*Node* ApplicationHandler::TopLevelNodeFromDrawable(Drawable* drawable) const
 {
     Node* n = drawable->GetNode();
     if (!n)
@@ -331,4 +331,4 @@ Node* ApplicationHandler::TopLevelNodeFromDrawable(Drawable* drawable) const
             n = n->GetParent();
     }
     return n;
-}
+}*/

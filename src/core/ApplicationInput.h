@@ -15,6 +15,7 @@ using namespace Urho3D;
 
 namespace Urho3D
 {
+    class Drawable;
     class Controls;
     class Engine;
     class Node;
@@ -103,6 +104,11 @@ private:
     /// Gyroscope on/off flag.
     bool useGyroscope_;
 
+    bool hoverEnabled_;
+    bool hoverHold_;
+    SharedPtr<Node> hoverNode_;
+    Node* GetDrawable();
+    Node* TopLevelNodeFromDrawable(Drawable* drawable) const;
 
 };
 #endif
