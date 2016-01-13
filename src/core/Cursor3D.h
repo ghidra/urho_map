@@ -11,6 +11,9 @@
 #include <Urho3D/Scene/Node.h>
 #include <Urho3D/Graphics/Graphics.h>
 #include <Urho3D/Input/Input.h>
+#include <Urho3D/Physics/RigidBody.h>
+
+class ApplicationHandler;
 
 namespace Urho3D {
 class StringHash;
@@ -34,6 +37,10 @@ public:
     void SetUseSecondary(const bool use);
     bool GetUseSecondary(){return useSecondary_;};
 
+    Vector3 GetCursorWorldPosition();
+    void SetConstrainee(RigidBody* body);
+    void ReleaseConstrainee();
+
 protected:
     void OnNodeSet(Urho3D::Node* node);
     void HandleUpdate(Urho3D::StringHash eventType, Urho3D::VariantMap& eventData);
@@ -45,4 +52,11 @@ protected:
     Urho3D::SharedPtr<Urho3D::Input> input_;
 
     bool useSecondary_;
+
+    Vector2 position_;
+    float hitDistance_;
+    bool constrained_;
+    //Urho3D::SharedPtr<Urho3D::RigidBody> constrainee_;
+
+    void ProjectPosition();
 };

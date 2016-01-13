@@ -35,6 +35,7 @@
 #include "CameraLogic.h"
 #include "ApplicationHandler.h"
 #include "PickingComponent.h"
+#include "Cursor3D.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -46,7 +47,8 @@ ApplicationInput::ApplicationInput(Context* context):
     quit_(false),
     debugCamera_(false),
     debugDrawPhysics_(false),
-    hoverEnabled_(true),
+    hoverEnabled_(false),
+    hoverGrabEnabled_(true),
     hoverNode_(NULL)
 {
     if (GetPlatform() == "Android" || GetPlatform() == "iOS")
@@ -136,7 +138,7 @@ void ApplicationInput::HandleUpdate(StringHash eventType, VariantMap& eventData)
     if (!ui->GetFocusElement())
     {
         UpdateHover();
-        //UpdateGrab();
+        UpdateGrab();
 
         //if (!touch_ || !touch_->useGyroscope_)
         //{
@@ -305,11 +307,12 @@ Ray ApplicationInput::GetMouseRay() const
 
 void ApplicationInput::UpdateHover()
 {
-    ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
+    //ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
     if (!hoverEnabled_)
         return;
 
     Node* hitNode = GetDrawable();
+
     if(hitNode!=NULL)
     {
         if (hoverNode_)
@@ -340,11 +343,13 @@ void ApplicationInput::UpdateHover()
 
 void ApplicationInput::UpdateGrab()
 {
-    if (!hoverEnabled_)
+    if (!hoverGrabEnabled_)
         return;
 
     Input* input = GetSubsystem<Input>();
     ApplicationHandler* appHandler = GetSubsystem<ApplicationHandler>();
+
+    Node* hitNode = GetDrawable();
 
     //input->GetMouseButtonDown(MOUSEB_LEFT) || input->GetMouseButtonPress(MOUSEB_LEFT)
     //check to see if we are intialting a grab
@@ -352,20 +357,41 @@ void ApplicationInput::UpdateGrab()
     {
         hoverHold_=true;
         //set the hoverNode
+        hoverNode_=hitNode;
+        PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        if(pc)
+        {
+            //set the initial drag offset
+            pc->SetPickPosition(appHandler->GetCursor()->GetCursorWorldPosition());
+            pc->HoverOver();
+            //get the rigidbody and set it
+            appHandler->GetCursor()->SetConstrainee(pc->GetBody());
+        }
     }
     else if(!input->GetMouseButtonDown(MOUSEB_LEFT) && hoverHold_)
     {
         hoverHold_=false;
         //relase the hoverNode
+        appHandler->GetCursor()->ReleaseConstrainee();
+        PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        if(pc)
+            pc->UnHoverOver();
+        
+        hoverNode_=NULL;
+
     }
     //lets do some dragging
     else if(hoverNode_!=NULL && hoverHold_ && input->GetMouseButtonDown(MOUSEB_LEFT))
     {
         //drag the node around
+        //PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        //if(pc)
+            //pc->Drag(appHandler->GetCursor()->GetCursorWorldPosition());
+            //pc->HoverOver();
     }
     //debigging
-    String debugHold = String(hoverHold_);
-    GetSubsystem<DebugHud>()->SetAppStats("Holding:", debugHold);
+    //String debugHold = String(hoverHold_);
+    //GetSubsystem<DebugHud>()->SetAppStats("Holding:", debugHold);
 }
 // 
 //get the node that we are over

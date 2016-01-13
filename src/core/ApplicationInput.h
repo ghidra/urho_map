@@ -105,6 +105,7 @@ private:
     bool useGyroscope_;
 
     bool hoverEnabled_;
+    bool hoverGrabEnabled_;
     bool hoverHold_;
     SharedPtr<Node> hoverNode_;
     Node* GetDrawable();

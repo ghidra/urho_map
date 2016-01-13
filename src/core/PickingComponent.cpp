@@ -12,10 +12,11 @@
 #include <Urho3D/UI/Text.h>
 #include <Urho3D/Math/Vector2.h>
 #include <Urho3D/Graphics/Viewport.h>
+#include <Urho3D/Physics/RigidBody.h>
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
-//#include <Urho3D/Engine/DebugHud.h>
+#include <Urho3D/Engine/DebugHud.h>
 
 
 PickingComponent::PickingComponent(Context* context):
@@ -56,7 +57,7 @@ void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData)
 //void PickingComponent::HandleHoverOver(StringHash eventType, VariantMap& eventData) {
 void PickingComponent::HoverOver() {
 
-  //GetSubsystem<DebugHud>()->SetAppStats(" Picking: ", "happy" );
+  GetSubsystem<DebugHud>()->SetAppStats(" Pickinging offset: ", String(pickPosition_) );
 
   Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
   if (!drawable) {
@@ -78,4 +79,18 @@ void PickingComponent::UnHoverOver() {
   text_->SetText("");
 
 //    UnsubscribeFromEvent(node_, E_UPDATE);
+}
+RigidBody* PickingComponent::GetBody()
+{
+  //GetSubsystem<DebugHud>()->SetAppStats(" Pickinging NODE: ", String(node_->GetComponent<RigidBody>()->GetPosition()) );
+  return node_->GetComponent<RigidBody>();
+}
+void PickingComponent::SetPickPosition(const Vector3 pos)
+{
+  pickPosition_=pos;
+}
+
+void PickingComponent::Drag(const Vector3 pos)
+{
+  //pickPosition_=pos;
 }

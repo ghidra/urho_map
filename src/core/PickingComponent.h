@@ -6,6 +6,7 @@
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Scene/Node.h>
 #include <Urho3D/UI/Text.h>
+#include <Urho3D/Physics/RigidBody.h>
 
 using namespace Urho3D;
 
@@ -32,17 +33,20 @@ public:
   void HoverOver();
   void UnHoverOver();
 
+  void SetPickPosition(const Vector3 pos);
+  RigidBody* GetBody();
+  void Drag(const Vector3 pos);
+
 protected:
   void OnNodeSet(Node* node);
   void HandleUpdate(StringHash eventType, VariantMap& eventData);
   //void HandleHoverOver(StringHash eventType, VariantMap& eventData);
   //void HandleUnHoverOver(StringHash eventType, VariantMap& eventData);
 
-  
-
-protected:
   SharedPtr<Node> textNode_;
   SharedPtr<Text> text_;
   Graphics* graphics_;
   Renderer* renderer_;
+
+  Vector3 pickPosition_;
 };

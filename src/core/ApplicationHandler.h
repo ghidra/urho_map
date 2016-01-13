@@ -8,6 +8,9 @@
 #include <Urho3D/Scene/Node.h>
 #include "ApplicationInput.h"
 #include "ConfigManager.h"
+//#include "Cursor3D.h"
+
+class Cursor3D;
 
 namespace Urho3D
 {
@@ -48,6 +51,7 @@ public:
     virtual void Stop();
 
     Scene* GetScene(){return scene_;};
+    Cursor3D* GetCursor(){return cursor_;};
 
     //Node* TopLevelNodeFromDrawable(Drawable* drawable) const;
 
@@ -59,6 +63,7 @@ public:
     //SharedPtr<Node> hoverNode_;
     //bool hoverEnabled_;
     //bool hoverHold_;//for when mouse pressed, we will hold the piece
+    SharedPtr<Cursor3D> cursor_;
     SharedPtr<Node> cursorBaseNode_;
     SharedPtr<Node> cursorNode_;
     ApplicationInput * applicationInput_ = NULL;
