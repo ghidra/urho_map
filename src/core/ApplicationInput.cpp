@@ -365,10 +365,10 @@ void ApplicationInput::UpdateGrab()
             pc->SetPickPosition(appHandler->GetCursor()->GetCursorWorldPosition());
             pc->HoverOver();
             //get the rigidbody and set it
-            appHandler->GetCursor()->SetConstrainee(pc->GetBody());
+            appHandler->GetCursor()->SetConstrainee(hitNode->GetComponent<RigidBody>());
         }
     }
-    else if(!input->GetMouseButtonDown(MOUSEB_LEFT) && hoverHold_)
+    else if(!input->GetMouseButtonDown(MOUSEB_LEFT) && hoverHold_ && hoverNode_)
     {
         hoverHold_=false;
         //relase the hoverNode

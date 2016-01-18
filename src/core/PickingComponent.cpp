@@ -78,16 +78,27 @@ void PickingComponent::HoverOver() {
 void PickingComponent::UnHoverOver() {
   text_->SetText("");
 
+  //reset the angular factor
+  RigidBody* rb = node_->GetComponent<RigidBody>();
+  rb->SetAngularFactor(Vector3(1.0f,1.0f,1.0f));
+
 //    UnsubscribeFromEvent(node_, E_UPDATE);
 }
-RigidBody* PickingComponent::GetBody()
+/*RigidBody* PickingComponent::GetBody()
 {
   //GetSubsystem<DebugHud>()->SetAppStats(" Pickinging NODE: ", String(node_->GetComponent<RigidBody>()->GetPosition()) );
   return node_->GetComponent<RigidBody>();
-}
+}*/
 void PickingComponent::SetPickPosition(const Vector3 pos)
 {
+  //this is called when the object is initially picked...
+  //position might be irrelevant.. but I can set the orientation and angular factor
   pickPosition_=pos;
+  ///
+  RigidBody* rb = node_->GetComponent<RigidBody>();
+  rb->SetAngularFactor(Vector3(0.0f,0.0f,0.0f));
+
+  node_->SetRotation(Quaternion());
 }
 
 void PickingComponent::Drag(const Vector3 pos)

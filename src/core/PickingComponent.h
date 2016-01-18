@@ -6,7 +6,7 @@
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Scene/Node.h>
 #include <Urho3D/UI/Text.h>
-#include <Urho3D/Physics/RigidBody.h>
+//#include <Urho3D/Physics/RigidBody.h>
 
 using namespace Urho3D;
 
@@ -34,7 +34,7 @@ public:
   void UnHoverOver();
 
   void SetPickPosition(const Vector3 pos);
-  RigidBody* GetBody();
+  //RigidBody* GetBody();
   void Drag(const Vector3 pos);
 
 protected:
