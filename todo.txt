@@ -1,0 +1,12 @@
+drop pieces into place
+add walls to keep pieces in view
+texture for the pieces (i think I have this already, just need to make the material)
+maybe move the secondray plane offset to cfg.. since I want to use that offset to move pieces while being moved to that same plane
+BUG - seems to be a bug when grabbing a RB that still has some motion to it... constraint doesnt get made?
+A menu to choose play type
+	-random piece
+	-alphabetical piece
+	-pile or pieces
+trigger happy stuff when a pieces is placed (incentive)
+based on concept art, each state has a small vignette of related illustrations... one day assets will be created for this stuff
+make it pretty
