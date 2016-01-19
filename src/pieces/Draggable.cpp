@@ -1,4 +1,4 @@
-#include "PickingComponent.h"
+#include "Draggable.h"
 
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Math/BoundingBox.h>
@@ -19,16 +19,17 @@
 #include <Urho3D/Engine/DebugHud.h>
 
 
-PickingComponent::PickingComponent(Context* context):
-  Component(context), textNode_(NULL), text_(NULL), graphics_(GetSubsystem<Graphics>()), renderer_(GetSubsystem<Renderer>()) {
+Draggable::Draggable(Context* context):
+  PickingComponent(context)
+{
 }
-PickingComponent::~PickingComponent() {
+Draggable::~Draggable() {
 }
-void PickingComponent::RegisterObject(Context* context) {
-  context->RegisterFactory<PickingComponent>();
+void Draggable::RegisterObject(Context* context) {
+  context->RegisterFactory<Draggable>();
 }
 
-void PickingComponent::OnNodeSet(Node* node) {
+/*void Draggable::OnNodeSet(Node* node) {
   if (!node) return;
 
   textNode_ = node->CreateChild();
@@ -41,38 +42,60 @@ void PickingComponent::OnNodeSet(Node* node) {
   text_->SetAlignment(HA_CENTER, VA_CENTER);
   text_->SetTextEffect(TE_SHADOW);
 
-  SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(PickingComponent, HandleUpdate));
+  SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(Draggable, HandleUpdate));
   //node_->SubscribeToEvent(E_HOVEROVER, URHO3D_HANDLER(PickingComponent, HandleHoverOver));
   //node_->SubscribeToEvent(node, E_UNHOVEROVER, URHO3D_HANDLER(PickingComponent, HandleUnHoverOver));
 }
 
-void PickingComponent::HandleUpdate(StringHash eventType, VariantMap& eventData) {
+void Draggable::HandleUpdate(StringHash eventType, VariantMap& eventData) {
   Viewport* viewport = renderer_->GetViewport(0);
   IntVector2 textPos = viewport->WorldToScreenPoint(textNode_->GetPosition());
   textPos.x_ -= graphics_->GetWidth() / 2;
   textPos.y_ -= graphics_->GetHeight() / 2;
   text_->SetPosition(textPos);
 }
+*/
+/*
 
-void PickingComponent::HoverOver() {
+//void PickingComponent::HandleHoverOver(StringHash eventType, VariantMap& eventData) {
+void Draggable::HoverOver() {
+
+  GetSubsystem<DebugHud>()->SetAppStats(" Pickinging offset: ", String(pickPosition_) );
+
   Drawable* drawable = static_cast<Drawable*>(node_->GetComponent<StaticModel>());
   if (!drawable) {
     drawable = static_cast<Drawable*>(node_->GetComponent<AnimatedModel>());
   }
   if (drawable) {
+    //URHO3D_LOGWARNING("happy");
     BoundingBox box = drawable->GetBoundingBox();
     textNode_->SetPosition(node_->GetPosition() + Vector3(0, box.Size().y_, 0));
   }
+  //textNode_->SetPosition(node_->GetPosition());
   text_->SetText(node_->GetName());
+
+//    SubscribeToEvent(node_, E_UPDATE, URHO3D_HANDLER(PickingComponent, HandleUpdate));
 }
+*/
 
 //void PickingComponent::HandleUnHoverOver(StringHash eventType, VariantMap& eventData) {
-void PickingComponent::UnHoverOver() {
-  text_->SetText("");
+void Draggable::UnHoverOver() {
+  PickingComponent::UnHoverOver();
+
+  //reset the angular factor
+  RigidBody* rb = node_->GetComponent<RigidBody>();
+  rb->SetAngularFactor(Vector3(1.0f,1.0f,1.0f));
+
 }
-void PickingComponent::SetPickPosition(const Vector3 pos)
+
+void Draggable::SetPickPosition(const Vector3 pos)
 {
-  //this is called when the object is initially picked...
-  //position might be irrelevant.. but I can set the orientation and angular factor
-  pickPosition_=pos;
+  PickingComponent::SetPickPosition(pos);
+  ///
+  RigidBody* rb = node_->GetComponent<RigidBody>();
+  rb->SetAngularFactor(Vector3(0.0f,0.0f,0.0f));
+
+  node_->SetRotation(Quaternion());
+  Vector3 wp =  node_->GetWorldPosition();
+  node_->SetWorldPosition(Vector3(wp.x_,1.0f,wp.z_));
 }

@@ -35,6 +35,7 @@
 #include "pieces/State.h"
 //#include "core/ApplicationInput.h"
 #include "core/PickingComponent.h"
+#include "pieces/Draggable.h"
 #include "core/Cursor3D.h"
 
 
@@ -51,6 +52,7 @@ Main::Main(Context* context) :
     CameraLogic::RegisterObject(context);
     State::RegisterObject(context);
     PickingComponent::RegisterObject(context);
+    Draggable::RegisterObject(context);
     Cursor3D::RegisterObject(context);
 }
 

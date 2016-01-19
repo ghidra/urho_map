@@ -28,7 +28,8 @@
 
 #include "State.h"
 #include "StateData.h"
-#include "../core/PickingComponent.h"
+//#include "../core/PickingComponent.h"
+#include "Draggable.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -84,7 +85,8 @@ void State::Setup(unsigned index,StateData* stateData)
     
     //LOGINFO(home_.ToString());
 
-    node_->CreateComponent<PickingComponent>();
+    //node_->CreateComponent<PickingComponent>();
+    node_->CreateComponent<Draggable>();
 
 }
 

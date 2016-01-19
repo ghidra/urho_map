@@ -34,14 +34,10 @@ public:
   void UnHoverOver();
 
   void SetPickPosition(const Vector3 pos);
-  //RigidBody* GetBody();
-  void Drag(const Vector3 pos);
 
 protected:
   void OnNodeSet(Node* node);
   void HandleUpdate(StringHash eventType, VariantMap& eventData);
-  //void HandleHoverOver(StringHash eventType, VariantMap& eventData);
-  //void HandleUnHoverOver(StringHash eventType, VariantMap& eventData);
 
   SharedPtr<Node> textNode_;
   SharedPtr<Text> text_;

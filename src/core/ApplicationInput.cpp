@@ -35,6 +35,7 @@
 #include "CameraLogic.h"
 #include "ApplicationHandler.h"
 #include "PickingComponent.h"
+#include "../pieces/Draggable.h"
 #include "Cursor3D.h"
 
 #include <Urho3D/DebugNew.h>
@@ -319,14 +320,14 @@ void ApplicationInput::UpdateHover()
         {
             if (hoverNode_ != hitNode)
             {
-                PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+                PickingComponent* pc = hoverNode_->GetDerivedComponent<PickingComponent>();
                 if(pc){
                     pc->UnHoverOver();
                 }
             }
         }
        
-        PickingComponent* pc = hitNode->GetComponent<PickingComponent>();
+        PickingComponent* pc = hitNode->GetDerivedComponent<PickingComponent>();
         if(pc){
             pc->HoverOver();
             hoverNode_ = hitNode;
@@ -334,7 +335,7 @@ void ApplicationInput::UpdateHover()
     }
     else if(hoverNode_!=NULL)
     {
-        PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        PickingComponent* pc = hoverNode_->GetDerivedComponent<PickingComponent>();
         if(pc){
             pc->UnHoverOver();
         }
@@ -358,7 +359,7 @@ void ApplicationInput::UpdateGrab()
         hoverHold_=true;
         //set the hoverNode
         hoverNode_=hitNode;
-        PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        Draggable* pc = hoverNode_->GetComponent<Draggable>();
         if(pc)
         {
             //set the initial drag offset
@@ -373,7 +374,7 @@ void ApplicationInput::UpdateGrab()
         hoverHold_=false;
         //relase the hoverNode
         appHandler->GetCursor()->ReleaseConstrainee();
-        PickingComponent* pc = hoverNode_->GetComponent<PickingComponent>();
+        Draggable* pc = hoverNode_->GetComponent<Draggable>();
         if(pc)
             pc->UnHoverOver();
         

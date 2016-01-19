@@ -67,8 +67,8 @@ void Cursor3D::SetConstrainee(RigidBody* body)
 }
 void Cursor3D::ReleaseConstrainee()
 {
-    //Constraint* c = cursorNode_->GetComponent<Constraint>();
-    //c->ReleaseConstraint();
+    Constraint* c = cursorNode_->GetComponent<Constraint>();
+    c->ReleaseConstraint();
     constrained_=false;
 }
 
