@@ -12,13 +12,13 @@
 #include <Urho3D/Physics/Constraint.h>
 #include <Urho3D/Physics/RigidBody.h>
 
-#if defined(CURSOR3D_DEBUG)
+//#if defined(CURSOR3D_DEBUG)
 #include <Urho3D/Input/InputEvents.h>
 #include <Urho3D/Engine/DebugHud.h>
 #include <Urho3D/Graphics/Renderer.h>
 #include <Urho3D/Graphics/DebugRenderer.h>
 #include <Urho3D/IO/Log.h>
-#endif
+//#endif
 
 using namespace Urho3D;
 

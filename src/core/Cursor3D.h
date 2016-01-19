@@ -1,6 +1,6 @@
 #pragma once
 
-#define CURSOR3D_DEBUG
+//#define CURSOR3D_DEBUG
 
 #include "ApplicationHandler.h"
 
